@@ -1,14 +1,9 @@
 {
   "name": "amazon-pod-scraper",
-  "version": "1.0.1",
-  "type": "module",
-  "main": "main.js",
+  "version": "1.0.0",
   "dependencies": {
     "apify": "^3.4.4",
     "crawlee": "^3.14.1",
     "playwright": "^1.48.2"
-  },
-  "scripts": {
-    "start": "node main.js"
   }
 }
