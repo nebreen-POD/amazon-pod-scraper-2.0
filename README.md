@@ -1,19 +1,7 @@
-# Amazon POD Scraper
+# Amazon POD Best-Sellers (titles-only)
 
-This Apify actor scrapes Amazon Best Seller novelty T-shirt categories for Men, Women, Girls, and Boys.
-
-## Features
-- Scrapes product title, URL, image, and rank.
-- Limits pagination to 3–5 pages per category (currently set to 5).
-- Outputs results as JSON in Apify dataset.
-
-## Input
-- `categoryUrls`: Optional. A list of Amazon Best Seller category URLs.
-
-## Output
-- JSON objects with fields:
-  - `category`
-  - `title`
-  - `url`
-  - `image`
-  - `rank`
+Scrapes Amazon Best Seller novelty T-shirt categories (women, men, girls, boys).  
+**Output:** product `title` and `productUrl` (plus `category` and `sourceUrl`).  
+**Pagination:** up to 1–5 pages per category (input controlled).  
+**Anti-429:** exponential backoff + re-enqueue.  
+**Docker image:** Playwright Chrome.

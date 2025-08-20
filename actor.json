@@ -1,7 +1,7 @@
 {
   "name": "amazon-pod-scraper",
-  "title": "Amazon POD Best-Sellers",
-  "version": "1.0.0",
+  "title": "Amazon POD Best-Sellers (titles-only)",
+  "version": "1.0.1",
   "buildTag": "latest",
   "baseDockerImage": "apify/actor-node-playwright-chrome:20"
 }
