@@ -1,53 +1,47 @@
-// main.js - Amazon POD titles-only scraper
-
+import { Actor } from 'apify';
 import { PlaywrightCrawler } from 'crawlee';
-import * as Apify from 'apify';
 
-const { categoryUrls, pagesPerCategory = 3, useApifyProxy = true, proxyGroups = [], maxBackoffMs = 60000 } = await Apify.getInput() || {};
+await Actor.init();
 
-const proxyConfig = useApifyProxy ? { useApifyProxy, apifyProxyGroups: proxyGroups } : {};
+const input = await Actor.getInput() || {};
+
+const categoryUrls = input.categoryUrls || [
+    { category: "women", url: "https://www.amazon.com/gp/bestsellers/fashion/9056923011" },
+    { category: "men", url: "https://www.amazon.com/gp/bestsellers/fashion/9056987011" },
+    { category: "girls", url: "https://www.amazon.com/gp/bestsellers/fashion/9057040011" },
+    { category: "boys", url: "https://www.amazon.com/gp/bestsellers/fashion/9057094011" }
+];
+
+const pagesPerCategory = input.pagesPerCategory || 3;
 
 const crawler = new PlaywrightCrawler({
-    proxyConfiguration: await Apify.createProxyConfiguration(proxyConfig),
-    maxConcurrency: 2,
-    requestHandlerTimeoutSecs: 60,
-    async requestHandler({ request, page, enqueueLinks, log }) {
-        const products = await page.$$eval('div.s-main-slot div[data-asin][data-component-type="s-search-result"] h2 a span', els =>
-            els.map(el => el.textContent.trim())
+    maxRequestsPerCrawl: pagesPerCategory * categoryUrls.length,
+    requestHandler: async ({ request, page, enqueueLinks, log }) => {
+        log.info(`Scraping ${request.url}`);
+        const products = await page.$$eval("div.p13n-sc-uncoverable-faceout", (els) =>
+            els.map((el) => {
+                const titleEl = el.querySelector("._cDEzb_p13n-sc-css-line-clamp-3_g3dy1");
+                const linkEl = el.querySelector("a.a-link-normal");
+                return {
+                    title: titleEl ? titleEl.textContent.trim() : null,
+                    url: linkEl ? linkEl.href : null,
+                };
+            })
         );
-        const links = await page.$$eval('div.s-main-slot div[data-asin][data-component-type="s-search-result"] h2 a', els =>
-            els.map(el => el.href)
-        );
-
-        for (let i = 0; i < products.length; i++) {
-            await Apify.pushData({
-                category: request.userData.category,
-                sourceUrl: request.userData.sourceUrl,
-                title: products[i],
-                productUrl: links[i]
-            });
-        }
-
-        // Exponential backoff if 429 encountered
-        page.on('response', async response => {
-            if (response.status() === 429) {
-                const backoff = Math.floor(Math.random() * maxBackoffMs);
-                log.warning(`429 detected. Backing off for ${backoff} ms`);
-                await new Promise(r => setTimeout(r, backoff));
-                await request.retry();
+        for (const p of products) {
+            if (p.title) {
+                await Actor.pushData({ category: request.userData.category, ...p });
             }
-        });
-    }
+        }
+    },
 });
 
-for (const { category, url } of categoryUrls || []) {
-    for (let pageNum = 1; pageNum <= pagesPerCategory; pageNum++) {
-        const pagedUrl = pageNum === 1 ? url : `${url}?pg=${pageNum}`;
-        await crawler.addRequests([{
-            url: pagedUrl,
-            userData: { category, sourceUrl: url }
-        }]);
+for (const { category, url } of categoryUrls) {
+    for (let i = 1; i <= pagesPerCategory; i++) {
+        const pageUrl = i === 1 ? url : `${url}?pg=${i}`;
+        await crawler.addRequests([{ url: pageUrl, userData: { category } }]);
     }
 }
 
 await crawler.run();
+await Actor.exit();

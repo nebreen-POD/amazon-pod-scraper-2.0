@@ -1,7 +1,11 @@
 {
   "name": "amazon-pod-scraper",
-  "title": "Amazon POD Best-Sellers (titles-only)",
-  "version": "1.0.1",
+  "title": "Amazon POD Scraper (No Schema)",
+  "description": "Scrapes Amazon POD bestseller T-shirt categories (titles + URLs).",
+  "version": "1.0.0",
   "buildTag": "latest",
-  "baseDockerImage": "apify/actor-node-playwright-chrome:20"
+  "baseDockerImage": "apify/actor-node-playwright-chrome:20",
+  "meta": {
+    "templateId": "playwright-crawler-js"
+  }
 }
