@@ -1,0 +1,14 @@
+{
+  "title": "Amazon POD Scraper",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "categoryUrls": {
+      "title": "Category URLs",
+      "type": "array",
+      "description": "List of Amazon Best Seller category URLs to scrape",
+      "editor": "json",
+      "items": { "type": "string" }
+    }
+  }
+}
