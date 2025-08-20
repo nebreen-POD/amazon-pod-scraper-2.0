@@ -6,9 +6,10 @@
     "categoryUrls": {
       "title": "Category URLs",
       "type": "array",
-      "description": "List of Amazon Best Seller category URLs to scrape",
-      "editor": "json",
+      "description": "Amazon category URLs to scrape",
+      "editor": "array",
       "items": { "type": "string" }
     }
-  }
+  },
+  "required": ["categoryUrls"]
 }
