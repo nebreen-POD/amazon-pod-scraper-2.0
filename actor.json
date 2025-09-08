@@ -1,8 +1,6 @@
 {
-  "name": "amazon-pod-scraper",
-  "title": "Amazon POD Scraper (Titles Only)",
-  "description": "Scrapes Amazon Best Seller novelty T-shirt categories and outputs product titles + URLs only.",
-  "version": "1.0.0",
-  "buildTag": "latest",
-  "baseDockerImage": "apify/actor-node-playwright-chrome:20"
+  "name": "amazon-pod-scraper-ngrams",
+  "title": "Amazon POD Scraper \u2014 Titles + N-grams",
+  "description": "Scrapes Amazon Best Seller T-shirt categories (Men/Women/Girls/Boys) and outputs product titles + URLs and an n-gram summary (1\u20133 grams).",
+  "version": "1.2.0"
 }

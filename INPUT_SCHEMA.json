@@ -1,0 +1,80 @@
+{
+  "title": "Amazon POD Scraper \u2014 Titles + N-grams",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "categoryUrls": {
+      "title": "Category URLs (one per line)",
+      "type": "array",
+      "editor": "stringList",
+      "description": "Amazon Best Sellers category URLs to scrape.",
+      "default": [
+        "https://www.amazon.com/gp/bestsellers/fashion/9056923011",
+        "https://www.amazon.com/gp/bestsellers/fashion/9056987011",
+        "https://www.amazon.com/gp/bestsellers/fashion/9057040011",
+        "https://www.amazon.com/gp/bestsellers/fashion/9057094011"
+      ],
+      "items": {
+        "type": "string"
+      }
+    },
+    "pagesPerCategory": {
+      "title": "Pages per category (1\u20135)",
+      "type": "integer",
+      "default": 3
+    },
+    "useApifyProxy": {
+      "title": "Use Apify Proxy",
+      "type": "boolean",
+      "default": true
+    },
+    "proxyGroups": {
+      "title": "Proxy groups",
+      "type": "array",
+      "editor": "stringList",
+      "default": [
+        "RESIDENTIAL"
+      ],
+      "items": {
+        "type": "string"
+      }
+    },
+    "maxBackoffMs": {
+      "title": "Max backoff on 429 (ms)",
+      "type": "integer",
+      "default": 60000
+    },
+    "ngramMax": {
+      "title": "Max n-gram (1\u20133)",
+      "type": "integer",
+      "default": 3
+    },
+    "ngramTopK": {
+      "title": "Top K per n",
+      "type": "integer",
+      "default": 50
+    },
+    "includeStopwords": {
+      "title": "Include common stopwords",
+      "type": "boolean",
+      "default": false
+    },
+    "extraStopwords": {
+      "title": "Additional stopwords (one per line)",
+      "type": "array",
+      "editor": "stringList",
+      "default": [
+        "t-shirt",
+        "tee",
+        "shirt",
+        "novelty",
+        "amazon",
+        "brand"
+      ],
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": []
+}
